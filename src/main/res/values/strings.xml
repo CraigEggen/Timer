@@ -2,6 +2,7 @@
     <string name="app_name">IntervalTimer</string>
     <string name="edit_message">First Interval Time</string>
     <string name="edit_message2">Second Interval Time</string>
+    <string name="delay_message">Delay Time</string>
     <string name="button_send">Start</string>
     <string name="button_end">Stop</string>
     <string name="pause_button">Pause</string>

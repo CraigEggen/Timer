@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import com.example.craig.intervaltimer.utils;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     boolean timerGo;
     Context thingy = this;
     int lastTime = 0;
+    Integer delayTime;
     Integer int1Time;
     Integer int2Time;
     int round;
@@ -60,15 +62,30 @@ public class MainActivity extends AppCompatActivity {
         else{
             startTime = (int) System.currentTimeMillis() / 1000;
             round = 1;
+
+            EditText delayText = (EditText) findViewById(R.id.delayVal);
+            String delayString = delayText.getText().toString();
+            delayTime = utils.ParseToSeconds(delayString);
+
+            if(delayTime != 0){
+                round = 2;
+                lastTime = startTime;
+                startTime += delayTime;
+            }
+
+
+
             EditText editText = (EditText) findViewById(R.id.int1Time);
 
-            //TODO:: Parse colons, nulls
-            int1Time = Integer.parseInt(editText.getText().toString());
+            //TODO:: Make stable in case of bad input
+            String int1String = editText.getText().toString();
+            int1Time = utils.ParseToSeconds(int1String);
 
             EditText editText2 = (EditText) findViewById(R.id.int2Time);
 
-            //TODO:: Parse colons, nulls
-            int2Time = Integer.parseInt(editText2.getText().toString());
+            String int2String = editText2.getText().toString();
+            int2Time = utils.ParseToSeconds(int2String);
+
             isPaused = false;
             handler.post(timerTick);
 
@@ -147,12 +164,16 @@ public class MainActivity extends AppCompatActivity {
 
 
             TextView e = (TextView) findViewById(R.id.timer);
+            String testString = "";
             currentTime = (int) System.currentTimeMillis() / 1000 - startTime;
-            String seconds = Integer.toString(currentTime % 60);
+            String seconds = Integer.toString(Math.abs(currentTime % 60));
+            if (currentTime%60<0){
+                testString += "-";
+            }
             if (seconds.length() == 1) {
                 seconds = "0" + seconds;
             }
-            String testString = Integer.toString(currentTime / 60) + ":" + seconds;
+            testString += Integer.toString(currentTime / 60) + ":" + seconds;
             e.setText(testString);
 
             if (lastTime != currentTime) {
