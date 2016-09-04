@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">IntervalTimer</string>
+    <string name="edit_message">First Interval Time</string>
+    <string name="edit_message2">Second Interval Time</string>
+    <string name="button_send">Start</string>
+    <string name="button_end">Stop</string>
+    <string name="pause_button">Pause</string>
+    <string name="time">0:00</string>
+    <string name="pauseOpt">Pause on Beep</string>
+    <string name="preference_file_key">testKey</string>
+    <integer name="saved_int1Time">10</integer>
+</resources>
