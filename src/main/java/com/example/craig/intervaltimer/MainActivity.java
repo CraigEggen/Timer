@@ -8,21 +8,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import com.example.craig.intervaltimer.utils;
 
 
 public class MainActivity extends AppCompatActivity {
-    //TODO:: saves and presets
+    //TODO:: Multiple presets
     //TODO:: Edit lengths while in use
-    //TODO:: Float or minimize working?
 
     Handler handler = new Handler();
     int startTime;
     boolean timerGo;
-    Context thingy = this;
+    Context myContext = this;
     int lastTime = 0;
     Integer delayTime;
     Integer int1Time;
@@ -109,16 +106,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void pauseOpt(View view){
-         pauseOnBeep = ((ToggleButton) view).isChecked();
+        pauseOnBeep = ((ToggleButton) view).isChecked();
     }
 
     public void onSave(View view){
+        EditText delayText = (EditText) findViewById(R.id.delayVal);
+        String delayString = delayText.getText().toString();
+        delayTime = utils.ParseToSeconds(delayString);
+
+        EditText editText = (EditText) findViewById(R.id.int1Time);
+        String int1String = editText.getText().toString();
+        int1Time = utils.ParseToSeconds(int1String);
+
+        EditText editText2 = (EditText) findViewById(R.id.int2Time);
+        String int2String = editText2.getText().toString();
+        int2Time = utils.ParseToSeconds(int2String);
+
+
         Context context = this;
         SharedPreferences sharedPref = context.getSharedPreferences(
                 "test_save", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPref.edit();
+
+        System.out.println(int1Time);
         editor.putInt("saved_int1", int1Time);
+
+        editor.putInt("saved_int2", int2Time);
+        editor.putInt("saved_delay", delayTime);
         editor.commit();
 
     }
@@ -129,9 +144,18 @@ public class MainActivity extends AppCompatActivity {
                 "test_save", Context.MODE_PRIVATE);
 
         int1Time = sharedPref.getInt("saved_int1", -1);
-        System.out.println(int1Time);
         EditText e = (EditText) findViewById(R.id.int1Time);
         e.setText(int1Time.toString());
+
+        int2Time = sharedPref.getInt("saved_int2", -1);
+        e = (EditText) findViewById(R.id.int2Time);
+        e.setText(int2Time.toString());
+
+        delayTime = sharedPref.getInt("saved_delay", -1);
+        e = (EditText) findViewById(R.id.delayVal);
+        e.setText(delayTime.toString());
+
+
 
 
     }
@@ -146,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
                   Thread.sleep(player.getDuration());
                   player.release();
               } catch (InterruptedException e2) {
-                  // TODO Auto-generated catch block
                   e2.printStackTrace();
               }
           }
@@ -182,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                     if (tmpTime%(int1Time + int2Time) == 0){
                         round = 2;
                         lastTime = currentTime;
-                        playSound(thingy);
+                        playSound(myContext);
                         if (pauseOnBeep){
                             pauseTimer(null);
                         }
@@ -191,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                 else if (round == 2 && currentTime%(int1Time+int2Time) == 0){
                     round = 1;
                     lastTime = currentTime;
-                    playSound(thingy);
+                    playSound(myContext);
                     if (pauseOnBeep){
                         pauseTimer(null);
                     }

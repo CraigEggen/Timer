@@ -8,6 +8,8 @@ import java.security.InvalidParameterException;
  */
 public class utils {
     public static int ParseToSeconds(String inputString){
+        //Parses an input from a string to an int representing the number of seconds
+        //Don't have to worry about non-number input due to the keyboard that is prompted
 
         String[] splitString = inputString.split(":");
 
